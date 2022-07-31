@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ltgas.mapper.SampledataMapper">
+    <resultMap id="SampledataMap" type="Sampledata">
+        <result property="cName" column="cname"/>
+        <result property="aliasName" column="alias_name"/>
+        <result property="eMail" column="email"/>
+        <result property="chineseScore" column="chinese_score"/>
+        <result property="mathScore" column="math_score"/>
+        <result property="englishScore" column="english_score"/>
+        <result property="joinDate" column="join_date" javaType="java.util.Date" jdbcType="DATE"/>
+    </resultMap>
+
+    <!-- List<Sampledata> queryAll01()  -->
+    <select id="queryAll01" resultMap="SampledataMap">
+        select *
+        from sampledata
+    </select>
+
+    <!-- List<Sampledata> queryAll02()  -->
+    <select id="queryAll02" resultMap="SampledataMap">
+        select sid, cname, age,  gender, member, chinese_score, math_score, english_score, join_date
+        from sampledata limit 50
+    </select>
+
+    <!-- List<Sampledata> queryById(int id)  -->
+    <select id="queryById" resultMap="SampledataMap">
+        select sid, cname, age,  gender, member, chinese_score, math_score, english_score, join_date
+        from sampledata
+        where id = #{id}
+    </select>
+
+    <!-- 方法1：使用 #{arg0}、#{arg1}... 参数列表传递参数  -->
+    <select id="queryLimit01" resultMap="SampledataMap">
+        select sid, cname, age,  gender, member, chinese_score, math_score, english_score, join_date
+        from sampledata
+        limit #{arg0}, #{arg1}
+    </select>
+
+    <!--  方法2：使用 #{param1}、#{param2}... 参数列表传递参数  -->
+    <select id="queryLimit02" resultMap="SampledataMap">
+        select sid, cname, age,  gender, member, chinese_score, math_score, english_score, join_date
+        from sampledata
+        limit #{param1},#{param2}
+    </select>
+
+    <!-- 方法3：使用 @Param 注解方法传递参数  -->
+    <select id="queryLimit03" resultMap="SampledataMap">
+        select sid, cname, age,  gender, member, chinese_score, math_score, english_score, join_date
+        from sampledata
+        limit #{startId}, #{rows}
+    </select>
+
+    <!-- 方法4：使用 map() 方法传递参数  -->
+    <select id="queryLimit04" resultMap="SampledataMap" parameterType="map">
+        select sid, cname, age,  gender, member, chinese_score, math_score, english_score, join_date
+        from sampledata
+        limit #{startId}, #{rows}
+    </select>
+
+    <!-- 按姓名 cname 模糊查询 queryByName(string name) -->
+    <select id="queryByNearcName" parameterType="String" resultMap="SampledataMap">
+        select *
+        from sampledata
+        where cname like concat('%',#{name},'%')
+    </select>
+
+</mapper>
+<!--
+List<Sampledata> queryPages();
+Sampledata queryBycName(String name);
+Sampledata addRowData(Sampledata sampledata);
+Sampledata updateRowData(Sampledata sampledata);
+Integer DeleteRowData(String name);
+-->
